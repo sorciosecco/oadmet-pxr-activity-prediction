@@ -11,3 +11,7 @@
 # Model training & evaluation
 
 # Results analysis
+
+# Acknowledgments
+- OpenADMET for organising the challenge
+- [Molecular Discovery Ltd](https://www.moldiscovery.com/) for providing the programs MoKa and VolSurf.
