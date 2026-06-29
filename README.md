@@ -1,11 +1,6 @@
 # OpenADMET PXR Challenge - Model Report
-
-**Abbreviations**: Atom Pair (AP), Cross-Validation (CV), Multi-Task Learning (MTL), Quantitative Structure-Activity Relationships (QSAR), Partial Least Squares (PLS), Topological Torsion (TT), VolSurf (VS).
-
-**Therminology**: Intra-consensus model (a model trained with a combination of features of various nature, e.g. 2D + 3D), Inter-consensus model (a model resulting from the combination of the predictions coming from separate models).
-
 # Overview
-
+The Pregnane-X Receptor (PXR) is a nuclear receptor that regulates the expression of drug metabolizing enzymes. Activation of PXR by small molecule ligands can increase enzyme levels, potentially leading to adverse drug-drug interactions and toxicity, making it an important antitarget in drug discovery and a major determinant of the adsorption, distribution, metabolism, excretion, and toxicity (ADMET) profile of new drug candidates. The OpenADMET organization has opened a challenge focused on the prediction of PXR activation by small molecules. The challenge participants are tasked with training quantitative structure-activity relationship (QSAR) models to predict the pEC50 values of a blind test set containing 513 PXR ligands. The preliminary results place me among the top 50 participants, with models achieving coefficient of determination (R2) values between 0.5 and 0.6.
 # Data preparation
 
 # Model training & evaluation
