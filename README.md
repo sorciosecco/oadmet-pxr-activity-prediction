@@ -10,22 +10,24 @@ I represented the compounds with a combination of 2D and 3D features:
 I scaled the continuous VolSurf descriptors in the training set (by removing the mean and scaling to unit variance) and applied the scaling to the test set compounds. Afterwards, I aggregated these two descriptor groups to form the X matrix which I used for training the model.
 # Model definition
 The model is a consensus of two different regression models trained using the same descriptors but different algorithms:
-- The model was a CatBoost regressor whose parameters I tuned to fit the training of a X matrix composed by both catecorical and continuous features and avoid overfitting: learning_rate=0.03, depth=6, l2_leaf_reg=3, random_strength=1, bagging_temperature=1, rsm=0.5. 
-- A neural network model implemented with PyTorch. 
+- A CatBoost gradient boosting regressor configured for predicting continuous molecular properties. It builds an ensemble of up to 3,000 decision trees, sequentially fitting each tree to correct the errors of the previous ones. A relatively low learning rate (0.03) and moderate tree depth (6) allow the model to capture complex, non-linear relationships while reducing the risk of overfitting. Additional regularization parameters, including L2 leaf regularization, feature subsampling (rsm=0.5), and stochastic sampling (bagging_temperature=1), further improve generalization. Training is made more efficient through early stopping, which halts the boosting process if performance on the validation set does not improve for 50 consecutive iterations.
+- A multimodal feed-forward neural network implemented with PyTorch. Separate neural network branches first learn latent representations from each input, reducing the Morgan fingerprints to a 256-dimensional embedding and the VolSurf descriptors to a 64-dimensional embedding. These embeddings are then concatenated and passed through a shared prediction head to produce a single continuous output for regression tasks. The architecture incorporates ReLU activations, batch normalization, and dropout layers to improve training stability, reduce overfitting, and enhance generalization.
+
+The consensus predictins were genrated with the following formula: Y<sub>Consensus</sub> = Y<sub>CatBoost</sub> * 0.5 + Y<sub>NeurlaNetwork</sub> * 0.5
 # Training & evaluation
-I performed cross-validation with early stopping (early_stopping_rounds=50) and 3000 iterations (number of trees) to block the trainig at the most optimal point. When aggregating the 5 folds to calculate the performance scores, I also averaged the number of iterations for the final model training. The following table reports the cross-validation scores mean absolute error (MAE) and R<sup>2</sup>.
+For each model, I performed cross-validation with early stopping (early_stopping_rounds=50) and 3000 iterations (number of trees) to block the trainig at the most optimal point. When aggregating the 5 folds to calculate the performance scores, I also averaged the number of iterations for the final model training. The following table reports the cross-validation scores mean absolute error (MAE) and R<sup>2</sup>.
 
 | Model | MAE (mean) | MAE (std) | R<sup>2</sup> (mean) | R<sup>2</sup> (std) |
 |----------|----------|----------|----------|----------|
 | CatBoost | 0.5342 | 0.0261 | 0.5563 | 0.0661 |
-| Neural netwrork | 0.5342 | 0.0261 | 0.5563 | 0.0661 |
+| Neural netwrork | 0.5564 | 0.02 | n.d. | n.d. |
 
 I trained an intermediate CatBoost with the full training set (n=4570) and by setting iterations=1171 (the mean iterations across the 5 cross-validation folds). I used this model to predict the 253 unblinded test set compounds. The following table reports the prediction scores and the relative absolute error (RAE) which is used for ranking the challenge participants.
 
 | Model | MAE | RAE | R<sup>2</sup> |
 |----------|----------|----------|----------|
 | CatBoost | 0.5064 | 0.6341 | 0.4905 |
-| Neural netwrork | 0.5064 | 0.6341 | 0.4905 |
+| Neural netwrork | 0.5195 | 0.6505 | 0.4975 |
 | Consensus | 0.4853 | 0.6077 | 0.5170 |
 
 Finally, I concatenated the training set with the unblinded test set (for a total of 4823 compounds), I applied the same scaling to the VolSurf descriptors of the training and the blind test sets, trained a final model and predicted the blind test compounds. These predictions and the ones generated for the unblinded test set using the intermediate model were submitted for the final ranking.
@@ -35,5 +37,5 @@ Finally, I concatenated the training set with the unblinded test set (for a tota
 # Conclusion
 
 # Acknowledgments
-- OpenADMET for organising the challenge
+- OpenADMET for organising the challenge.
 - [Molecular Discovery Ltd](https://www.moldiscovery.com/) for providing the programs MoKa and VolSurf.
