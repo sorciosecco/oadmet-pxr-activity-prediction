@@ -34,10 +34,21 @@ Finally, I concatenated the training set with the unblinded test set (for a tota
 
 # Results analysis
 The scores relative to the prediction of the 253 unblinded compounds are indicative of a model with decent predictive power. The experimental vs predicted scatter plot in Figure 1 shows that the model struggles more in predicting the high and low pEC<sub>50</sub> values at the extremes of the activity distribution.
+
 <figure>
-  <img src="images/figure1.png" alt="Description" width="400">
-  <figcaption>This is the visible caption text</figcaption>
+  <img src="images/figure1.png" alt="Description" width="600">
+  <figcaption>Figure 1</figcaption>
 </figure>
+
+The overprediction of the inactives and the underprediction of the actives can be quantified by calculating the bias for each activity bin.
+
+| pEC<sub>50</sub> bin | Count | Bias | MAE |
+|----------|----------|----------|----------|
+| (1.5, 3] | 91 | 1.5731 | 1.6064 |
+| (3, 4] | 90 | 0.2737 | 0.4934 |
+| (4, 5] | 248 | -0.0194 | 0.3436 |
+| (5, 6] | 170 | -0.2283 | 0.3052 |
+| (6, 8] | 6 | -0.8187 | 0.8187 |
 
 # Conclusion
 
