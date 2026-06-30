@@ -20,13 +20,14 @@ Only one duplicate compound was identified in the original training dataset. Thr
 
 After concatenation, the final training set contained **4570 compounds**. The same preprocessing pipeline was applied to the test set, and no compounds were removed. Finally, the training data were split into five folds for cross-validation using the Tanimoto similarity splitter implemented in DeepChem.
 # Molecular descriptors
-I represented the compounds with a combination of 2D and 3D features:
-1. Morgan fingerprints with radius 2 and 2048 bits to represent the local chemical environment.
-2. VolSurf descriptors (n=122) to represent the global interaction and physchem environment.
-I scaled the continuous VolSurf descriptors in the training set (by removing the mean and scaling to unit variance) and applied the scaling to the test set compounds. Afterwards, I aggregated these two descriptor groups to form the X matrix which I used for training the model.
+Compounds were represented using a combination of complementary 2D and 3D molecular descriptors:
+1.  **Morgan fingerprints** (radius = 2, 2,048 bits)
+2.  **VolSurf descriptors** (122 features)
+
+The continuous VolSurf descriptors were standardized using the training set statistics (mean removal and unit variance scaling), and the same transformation was applied to the test set. The scaled VolSurf descriptors were then concatenated with the Morgan fingerprints to form the final feature matrix used for model training.
 # Model definition
 The model is a consensus of two different regression models trained using the same descriptors but different algorithms:
-- A CatBoost gradient boosting regressor configured for predicting continuous molecular properties. It builds an ensemble of up to 3,000 decision trees, sequentially fitting each tree to correct the errors of the previous ones. A relatively low learning rate (0.03) and moderate tree depth (6) allow the model to capture complex, non-linear relationships while reducing the risk of overfitting. Additional regularization parameters, including L2 leaf regularization, feature subsampling (rsm=0.5), and stochastic sampling (bagging_temperature=1), further improve generalization. Training is made more efficient through early stopping, which halts the boosting process if performance on the validation set does not improve for 50 consecutive iterations.
+- A CatBoost regressor configured for predicting continuous molecular properties. It builds an ensemble of up to 3,000 decision trees, sequentially fitting each tree to correct the errors of the previous ones. A relatively low learning rate (0.03) and moderate tree depth (6) allow the model to capture complex, non-linear relationships while reducing the risk of overfitting. Additional regularization parameters, including L2 leaf regularization, feature subsampling (rsm=0.5), and stochastic sampling (bagging_temperature=1), further improve generalization. Training is made more efficient through early stopping, which halts the boosting process if performance on the validation set does not improve for 50 consecutive iterations.
 - A multimodal feed-forward neural network implemented with PyTorch. Separate neural network branches first learn latent representations from each input, reducing the Morgan fingerprints to a 256-dimensional embedding and the VolSurf descriptors to a 64-dimensional embedding. These embeddings are then concatenated and passed through a shared prediction head to produce a single continuous output for regression tasks. The architecture incorporates ReLU activations, batch normalization, and dropout layers to improve training stability, reduce overfitting, and enhance generalization.
 
 The consensus predictins were genrated with the following formula: Y<sub>Consensus</sub> = Y<sub>CatBoost</sub> * 0.5 + Y<sub>NeurlaNetwork</sub> * 0.5
@@ -67,7 +68,7 @@ The overprediction of the inactives and the underprediction of the actives can b
 | (6, 8] | 10 | -0.8187 | 0.8187 |
 
 # Conclusion
-I have developed a consensus model for predicting the prediction of PXR pEC<sub>50</sub>. The model showed good predictive power, but struggled to predict accurately the values at the extremes. Future work will include the use of conformer-dependent 3D descriptors to identify the active conformations of the high end potency compounds, structure-based representations to improve the overall accuracy and multi-instance learning to account for multiple chemical states of compounds.
+I have developed a consensus model for predicting the PXR pEC<sub>50</sub>. The model showed good predictive power, but struggled to predict accurately the values at the extremes. Future work will include the use of conformer-dependent 3D descriptors to identify the active conformations of the high end potency compounds, structure-based representations to improve the overall accuracy and multi-instance learning to account for multiple chemical states of compounds.
 # Acknowledgments
 - OpenADMET for organising the challenge.
 - [Molecular Discovery Ltd](https://www.moldiscovery.com/) for providing the programs MoKa and VolSurf.
