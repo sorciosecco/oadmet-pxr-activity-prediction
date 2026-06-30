@@ -2,7 +2,17 @@
 # Overview
 The Pregnane-X Receptor (PXR) is a nuclear receptor that regulates the expression of drug metabolizing enzymes. Activation of PXR by small molecule ligands can increase enzyme levels, potentially leading to adverse drug-drug interactions and toxicity, making it an important antitarget in drug discovery and a major determinant of the adsorption, distribution, metabolism, excretion, and toxicity (ADMET) profile of new drug candidates. The OpenADMET organization has opened a challenge focused on the prediction of PXR activation by small molecules. The challenge participants are tasked with training quantitative structure-activity relationship (QSAR) models to predict the pEC<sub>50</sub> values of a blind test set containing 513 PXR ligands. The preliminary results place me among the top 50 participants, with models achieving coefficient of determination (R<sup>2</sup>) values between 0.5 and 0.6.
 # Data preparation
-The training set was composed of three datasets provided by OpenADMET: the original training dataset (n=4139), the crudes dataset (n=347) and the semipure dataset (n=90). The original training set was the first to be released with the beginning of the challenge. The other two datasets were released in a second time. The test set was composed by 513 compounds of which, 253 had unblinded pEC<sub>50</sub> values and 260 had blinded pEC<sub>50</sub> values. RDKit was used to standardised the compounds' SMILES of all datasets as follows. Salts were stripped of their smaller fragment, SMILES were neutralised and the canonical SMILES and InChIKey were generated. Duplicates were aggregated by calculating the mean of their pEC<sub>50</sub> values. There was only one duplicated compound in the original training set. Two compounds were removed because they were outside the (min 4, max 75) number of heavy atoms limits and one more was removed because it contained a non standard element. The training datasets were concatenated resulting in a total of 4570 compounds. The test set compounds were process in the same way and none of them was removed with this data preparation workflow. Finally, the training data was split into 5 parts for cross-validation using the Tanimoto similarity splitter provided by the deepchem package.
+The training set combined three datasets provided by OpenADMET:
+-   Original training dataset (n = 4,139)
+-   Crudes dataset (n = 347)
+-   Semipure dataset (n = 90)
+The original training dataset was released at the start of the challenge, while the Crudes and Semipure datasets became available later. The test set consisted of 513 compounds, of which 253 had publicly available (unblinded) pEC`<sub>`{=html}50`</sub>`{=html} values and 260 remained blinded. All datasets were standardized using RDKit. The preprocessing workflow included:
+-   Removing salts while retaining the largest fragment.
+-   Neutralizing molecules.
+-   Generating canonical SMILES and InChIKeys.
+-   Aggregating duplicate compounds by averaging their
+    pEC`<sub>`{=html}50`</sub>`{=html} values.
+Only one duplicate compound was identified in the original training dataset. Three compounds were removed from the training data: - two because they fell outside the permitted heavy atom range (4--75), - one because it contained a non-standard element. After concatenation, the final training set contained **4,570 compounds**. The same preprocessing pipeline was applied to the test set, and no compounds were removed. Finally, the training data were split into five folds for cross-validation using the Tanimoto similarity splitter implemented in DeepChem.
 # Molecular descriptors
 I represented the compounds with a combination of 2D and 3D features:
 1. Morgan fingerprints with radius 2 and 2048 bits to represent the local chemical environment.
@@ -40,16 +50,15 @@ The scores relative to the prediction of the 253 unblinded compounds are indicat
   <figcaption>Figure 1</figcaption>
 </figure>
 
-
 The overprediction of the inactives and the underprediction of the actives can be quantified by calculating the bias (error) for each activity bin.
 
 | pEC<sub>50</sub> bin | Compounds count | Bias | MAE |
 |----------|----------|----------|----------|
-| (1.5, 3] | 91 | 1.5731 | 1.6064 |
-| (3, 4] | 90 | 0.2737 | 0.4934 |
-| (4, 5] | 248 | -0.0194 | 0.3436 |
-| (5, 6] | 170 | -0.2283 | 0.3052 |
-| (6, 8] | 6 | -0.8187 | 0.8187 |
+| (1.5, 3] | 24 | 1.5731 | 1.6064 |
+| (3, 4] | 31 | 0.2737 | 0.4934 |
+| (4, 5] | 86 | -0.0194 | 0.3436 |
+| (5, 6] | 102 | -0.2283 | 0.3052 |
+| (6, 8] | 10 | -0.8187 | 0.8187 |
 
 # Conclusion
 I have developed a consensus model for predicting the prediction of PXR pEC<sub>50</sub>. The model showed good predictive power, but struggled to predict accurately the values at the extremes. Future work will include the use of conformer-dependent 3D descriptors to identify the active conformations of the high end potency compounds, structure-based representations to improve the overall accuracy and multi-instance learning to account for multiple chemical states of compounds.
