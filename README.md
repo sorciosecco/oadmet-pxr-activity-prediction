@@ -40,9 +40,10 @@ The scores relative to the prediction of the 253 unblinded compounds are indicat
   <figcaption>Figure 1</figcaption>
 </figure>
 
-The overprediction of the inactives and the underprediction of the actives can be quantified by calculating the bias for each activity bin.
 
-| pEC<sub>50</sub> bin | Count | Bias | MAE |
+The overprediction of the inactives and the underprediction of the actives can be quantified by calculating the bias (error) for each activity bin.
+
+| pEC<sub>50</sub> bin | Compounds count | Bias | MAE |
 |----------|----------|----------|----------|
 | (1.5, 3] | 91 | 1.5731 | 1.6064 |
 | (3, 4] | 90 | 0.2737 | 0.4934 |
@@ -51,7 +52,7 @@ The overprediction of the inactives and the underprediction of the actives can b
 | (6, 8] | 6 | -0.8187 | 0.8187 |
 
 # Conclusion
-
+I have developed a consensus model for predicting the prediction of PXR pEC<sub>50</sub>. The model showed good predictive power, but struggled to predict accurately the values at the extremes. Future work will include the use of conformer-dependent 3D descriptors to identify the active conformations of the high end potency compounds, structure-based representations to improve the overall accuracy and multi-instance learning to account for multiple chemical states of compounds.
 # Acknowledgments
 - OpenADMET for organising the challenge.
 - [Molecular Discovery Ltd](https://www.moldiscovery.com/) for providing the programs MoKa and VolSurf.
