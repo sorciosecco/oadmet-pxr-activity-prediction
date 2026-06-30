@@ -51,14 +51,12 @@ I trained an intermediate CatBoost with the full training set (n = 4570) and by 
 Finally, I concatenated the training set with the unblinded test set (for a total of 4823 compounds), I applied the same scaling to the VolSurf descriptors of the training and the blind test sets, trained a final model and predicted the blind test compounds. These predictions, and the ones generated for the unblinded test set using the intermediate model, were submitted to OpenADMET for the final ranking.
 
 # Results analysis
-The scores relative to the prediction of the 253 unblinded compounds are indicative of a model with decent predictive power. The experimental vs predicted scatter plot in Figure 1 shows that the model struggles more in predicting the high and low pEC<sub>50</sub> values at the extremes of the activity distribution.
-
 <figure>
   <img src="images/figure1.png" alt="Description" width="600">
   <figcaption>Figure 1. Scatter plot of the experimental (y_true) and predicted (y_pred_dt_nn) pEC<sub>50</sub> for the unblinded test set.</figcaption>
 </figure>
 
-The overprediction of the inactives and the underprediction of the actives can be quantified by calculating the bias (error) for each activity bin.
+The scores relative to the prediction of the 253 unblinded compounds are indicative of a model with decent predictive power. The experimental vs predicted scatter plot in Figure 1 shows that the model struggles more in predicting the high and low pEC<sub>50</sub> values at the extremes of the activity distribution. The overprediction of the inactives and the underprediction of the actives can be quantified by calculating the bias (error) for each activity bin.
 
 | pEC<sub>50</sub> bin | Compounds count | Bias | MAE |
 |----------|----------|----------|----------|
