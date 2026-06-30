@@ -34,7 +34,7 @@ Finally, I concatenated the training set with the unblinded test set (for a tota
 
 # Results analysis
 The scores relative to the prediction of the 253 unblinded compounds are indicative of a model with decent predictive power. The experimental vs predicted scatter plot in Figure 1 shows that the model struggles more in predicting the high and low pEC<sub>50</sub> values at the extremes of the activity distribution.
-![Description](images/figure1.png)
+![Figure 1](images/figure1.png)
 # Conclusion
 
 # Acknowledgments
