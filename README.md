@@ -55,7 +55,7 @@ The scores relative to the prediction of the 253 unblinded compounds are indicat
 
 <figure>
   <img src="images/figure1.png" alt="Description" width="600">
-  <figcaption>Figure 1</figcaption>
+  <figcaption>Figure 1. Scatter plot of the experimental (y_true) and predicted (y_pred_dt_nn) pEC<sub>50</sub> for the unblinded test set.</figcaption>
 </figure>
 
 The overprediction of the inactives and the underprediction of the actives can be quantified by calculating the bias (error) for each activity bin.
