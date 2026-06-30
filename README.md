@@ -66,8 +66,10 @@ The scores relative to the prediction of the 253 unblinded compounds are indicat
 | (5, 6] | 102 | -0.2283 | 0.3052 |
 | (6, 8] | 10 | -0.8187 | 0.8187 |
 
+The model's limited predictive performance for highly active compounds may be attributed to the lack of an appropriate 3D conformer representation, which can play a critical role in protein binding. Conversely, the model's difficulty in predicting compounds with low activity may not be entirely due to the model itself. Instead, it is likely influenced by the high experimental uncertainty associated with low-activity compounds, which reduces confidence in their reported activity labels. As the challenge organisers noted, "I wouldn't put much faith in anything less than 4 (100 μM), which is probably close to the solubility limit for most compounds." (https://discord.com/channels/1412827471488745545/1481446049473237187/1498865953386266865).
+
 # Conclusion
-I have developed a consensus model for predicting the pEC<sub>50</sub> of partially blind dataset of PXR ligands. The model showed good predictive power, but struggled to predict accurately the values at the extremes. Future work will include the use of conformer-dependent 3D descriptors to identify the active conformations of the high end potency compounds, structure-based representations to improve the overall accuracy and multi-instance learning to account for multiple chemical states of compounds.
+For the second stage of the OpenADMET - PXR challenge (activity prediction track) I have developed a regression model and predicted the pEC<sub>50</sub> of a partially blind dataset of PXR ligands with it. The model showed good predictive power, but struggled to predict accurately the values at the extremes. Future work will include the use of conformer-dependent 3D descriptors to identify the active conformations of the high end potency compounds, structure-based representations to improve the overall accuracy,  multi-instance learning to account for multiple chemical states of compounds, and the incorporation of the experimental uncertainty to downweight the low activity compounds.
 # Acknowledgments
 - OpenADMET for organising the challenge.
 - [Molecular Discovery Ltd](https://www.moldiscovery.com/) for providing the programs MoKa and VolSurf.
