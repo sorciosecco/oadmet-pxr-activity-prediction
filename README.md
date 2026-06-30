@@ -6,12 +6,14 @@ The training set combined three datasets provided by OpenADMET:
 -   Original training dataset (n = 4,139)
 -   Crudes dataset (n = 347)
 -   Semipure dataset (n = 90)
+
 The original training dataset was released at the start of the challenge, while the Crudes and Semipure datasets became available later. The test set consisted of 513 compounds, of which 253 had publicly available (unblinded) pEC`<sub>`{=html}50`</sub>`{=html} values and 260 remained blinded. All datasets were standardized using RDKit. The preprocessing workflow included:
 -   Removing salts while retaining the largest fragment.
 -   Neutralizing molecules.
 -   Generating canonical SMILES and InChIKeys.
 -   Aggregating duplicate compounds by averaging their
     pEC`<sub>`{=html}50`</sub>`{=html} values.
+
 Only one duplicate compound was identified in the original training dataset. Three compounds were removed from the training data: - two because they fell outside the permitted heavy atom range (4--75), - one because it contained a non-standard element. After concatenation, the final training set contained **4,570 compounds**. The same preprocessing pipeline was applied to the test set, and no compounds were removed. Finally, the training data were split into five folds for cross-validation using the Tanimoto similarity splitter implemented in DeepChem.
 # Molecular descriptors
 I represented the compounds with a combination of 2D and 3D features:
